@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "email-marketing"
+client_id = "71c4db3ca1b754d2077031b2710818db"
+application_url = "https://hydrocodone-auction-docs-revenues.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://hydrocodone-auction-docs-revenues.trycloudflare.com/auth/callback",
+  "https://hydrocodone-auction-docs-revenues.trycloudflare.com/auth/shopify/callback",
+  "https://hydrocodone-auction-docs-revenues.trycloudflare.com/api/auth/callback",
+  "https://hydrocodone-auction-docs-revenues.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "hongsonstore.myshopify.com"
