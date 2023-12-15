@@ -8,6 +8,7 @@ import {
 	QueryProvider,
 	PolarisProvider,
 } from "./components";
+import "./style/app.css";
 
 export default function App() {
 	// Any .tsx or .jsx files in /pages will become a route
@@ -26,6 +27,10 @@ export default function App() {
 									label: t("Management"),
 									destination: "/management",
 								},
+								{
+                  label: "email",
+                  destination: "/newemail",
+                },
 							]}
 						/>
 						<Routes pages={pages} />

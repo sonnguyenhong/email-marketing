@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "Project"
+client_id = "dc84a6f2231088b7df11545e7deb74e5"
+application_url = "https://earl-tracks-webmasters-indexed.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://earl-tracks-webmasters-indexed.trycloudflare.com/auth/callback",
+  "https://earl-tracks-webmasters-indexed.trycloudflare.com/auth/shopify/callback",
+  "https://earl-tracks-webmasters-indexed.trycloudflare.com/api/auth/callback",
+  "https://earl-tracks-webmasters-indexed.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "namstore1702.myshopify.com"
