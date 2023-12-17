@@ -4,39 +4,39 @@ import { NavigationMenu } from "@shopify/app-bridge-react";
 import Routes from "./Routes";
 
 import {
-	AppBridgeProvider,
-	QueryProvider,
-	PolarisProvider,
+  AppBridgeProvider,
+  QueryProvider,
+  PolarisProvider,
 } from "./components";
 import "./style/app.css";
 
 export default function App() {
-	// Any .tsx or .jsx files in /pages will become a route
-	// See documentation for <Routes /> for more info
-	const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
-	const { t } = useTranslation();
+  // Any .tsx or .jsx files in /pages will become a route
+  // See documentation for <Routes /> for more info
+  const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
+  const { t } = useTranslation();
 
-	return (
-		<PolarisProvider>
-			<BrowserRouter>
-				<AppBridgeProvider>
-					<QueryProvider>
-						<NavigationMenu
-							navigationLinks={[
-								{
-									label: t("Management"),
-									destination: "/management",
-								},
-								{
-                  label: "email",
+  return (
+    <PolarisProvider>
+      <BrowserRouter>
+        <AppBridgeProvider>
+          <QueryProvider>
+            <NavigationMenu
+              navigationLinks={[
+                {
+                  label: t("Management"),
+                  destination: "/management",
+                },
+                {
+                  label: "Email Automation",
                   destination: "/newemail",
                 },
-							]}
-						/>
-						<Routes pages={pages} />
-					</QueryProvider>
-				</AppBridgeProvider>
-			</BrowserRouter>
-		</PolarisProvider>
-	);
+              ]}
+            />
+            <Routes pages={pages} />
+          </QueryProvider>
+        </AppBridgeProvider>
+      </BrowserRouter>
+    </PolarisProvider>
+  );
 }

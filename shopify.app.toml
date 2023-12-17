@@ -2,7 +2,7 @@
 
 name = "email-marketing"
 client_id = "71c4db3ca1b754d2077031b2710818db"
-application_url = "https://silver-backup-pi-wc.trycloudflare.com"
+application_url = "https://eye-workplace-exec-pop.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://silver-backup-pi-wc.trycloudflare.com/auth/callback",
-  "https://silver-backup-pi-wc.trycloudflare.com/auth/shopify/callback",
-  "https://silver-backup-pi-wc.trycloudflare.com/api/auth/callback",
-  "https://silver-backup-pi-wc.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://eye-workplace-exec-pop.trycloudflare.com/auth/callback",
+  "https://eye-workplace-exec-pop.trycloudflare.com/auth/shopify/callback",
+  "https://eye-workplace-exec-pop.trycloudflare.com/api/auth/callback",
+  "https://eye-workplace-exec-pop.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
