@@ -25,7 +25,7 @@ const STEP = {
 
 export default function NewEmail() {
   const { t } = useTranslation();
-  const [step, setStep] = useState(STEP.SELECT_CUSTOMER);
+  const [step, setStep] = useState(STEP.SELECT_EMAIL_TYPE);
 
   const handleNextStep = () => {
     if (step < STEP.SETUP_AUTOMATION) {
