@@ -15,7 +15,8 @@ import {
 import React from "react";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { getEmailTemplate } from "../hooks";
 function disambiguateLabel(key, value) {
 	switch (key) {
 		case "moneySpent":
@@ -37,6 +38,9 @@ function isEmpty(value) {
 	}
 }
 export default function ManagementTable() {
+	useEffect(() => {
+		getEmailTemplate({ type: "hello" });
+	}, []);
 	const { t } = useTranslation();
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 	const [itemStrings, setItemStrings] = useState([
