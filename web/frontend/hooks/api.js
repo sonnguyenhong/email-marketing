@@ -1,14 +1,14 @@
 import axios from "axios";
 const emailTemplateClient = axios.create({
-	baseURL: "https://65831be102f747c8367b1577.mockapi.io",
+	baseURL: "http://192.168.15.1:51143/api",
 });
 
 export async function getEmailTemplate(params) {
 	try {
-		const response = await emailTemplateClient.get("/email", {
+		const response = await emailTemplateClient.get("/template-mail", {
 			params: params,
 		});
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error("Error posting file", error);
 		throw error;

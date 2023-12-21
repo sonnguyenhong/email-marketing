@@ -40,8 +40,10 @@ function isEmpty(value) {
 }
 export default function ManagementTable() {
 	useEffect(() => {
-		getEmailTemplate({ type: "hello" });
-	}, []);
+		getEmailTemplate({ page: 1, itemsPerPage: 10 }).then((data) =>
+			setEmails(data)
+		);
+	}, [getEmailTemplate]);
 	const { t } = useTranslation();
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 	const [itemStrings, setItemStrings] = useState([
@@ -147,6 +149,7 @@ export default function ManagementTable() {
 	const [moneySpent, setMoneySpent] = useState(undefined);
 	const [taggedWith, setTaggedWith] = useState("");
 	const [queryValue, setQueryValue] = useState("");
+	const [emails, setEmails] = useState([]);
 
 	const handleAccountStatusChange = useCallback(
 		(value) => setAccountStatus(value),
@@ -161,8 +164,13 @@ export default function ManagementTable() {
 		[]
 	);
 	const handleFiltersQueryChange = useCallback(
-		(value) => setQueryValue(value),
-		[]
+		(value) => {
+			setQueryValue(value);
+			getEmailTemplate({ search: value, page: 1, itemsPerPage: 10 }).then(
+				(data) => setEmails(data)
+			);
+		},
+		[getEmailTemplate]
 	);
 	const handleAccountStatusRemove = useCallback(
 		() => setAccountStatus(undefined),
@@ -265,41 +273,7 @@ export default function ManagementTable() {
 			onRemove: handleTaggedWithRemove,
 		});
 	}
-	const emails = [
-		{
-			id: "1020",
-			email: "#1020",
-			startDate: "Jul 20 at 4:34pm",
-			endDate: "Jul 20 at 4:34pm",
-			title: "Jaydon Stanton",
-			totalUser: "1000",
-			openRate: "20%",
-			clickRate: "20%",
-			status: "Sent",
-		},
-		{
-			id: "1019",
-			email: "#1019",
-			startDate: "Jul 20 at 4:34pm",
-			endDate: "Jul 20 at 4:34pm",
-			title: "Ruben Westerfelt",
-			totalUser: "2000",
-			openRate: "20%",
-			clickRate: "20%",
-			status: "Draft",
-		},
-		{
-			id: "1018",
-			email: "#1018",
-			startDate: "Jul 20 at 4:34pm",
-			endDate: "Jul 20 at 4:34pm",
-			title: "Leo Carder",
-			totalUser: "3000",
-			openRate: "20%",
-			clickRate: "20%",
-			status: "Draft",
-		},
-	];
+
 	const resourceName = {
 		singular: "email",
 		plural: "emails",
