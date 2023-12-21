@@ -13,24 +13,28 @@ import {
   Toast,
   Frame,
 } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import "../../style/app.css";
+import tinycolor from "tinycolor2";
 
 const EditEmailContent = ({ category, setInfoMail }) => {
-  let [storeName, setStoreName] = useState();
+  let [storeName, setStoreName] = useState("HONGSONSTORE");
   let [title, setTitle] = useState();
   let [message, setMessage] = useState();
   let [btnContent, setBtnContent] = useState();
   let [file, setFile] = useState();
+  let [buttonTextColorRGB, setButtonTextColorRGB] =
+    useState("rgb(256,256,256)");
+  let [buttonBgColorRGB, setButtonBgColorRGB] = useState("rgb(0,0,0)");
   let [buttonTextColor, setButtonTextColor] = useState({
-    hue: 120,
-    brightness: 1,
+    hue: 0,
+    brightness: 0,
     saturation: 1,
   });
   const [buttonBgColor, setButtonBgColor] = useState({
-    hue: 120,
-    brightness: 1,
-    saturation: 1,
+    hue: 0,
+    brightness: 0,
+    saturation: 0,
   });
   const [active, setActive] = useState(false);
 
@@ -75,14 +79,59 @@ const EditEmailContent = ({ category, setInfoMail }) => {
         file,
         message,
         btnContent,
-        buttonTextColor,
-        buttonBgColor
+        buttonTextColorRGB,
+        buttonBgColorRGB
       );
       toggleActive();
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onChangeTextColorBtn = (value) => {
+    console.log(value);
+    setButtonTextColor(value);
+    const rgbColor = tinycolor({
+      h: value.hue,
+      s: value.saturation,
+      v: value.brightness,
+    }).toRgb();
+    setButtonTextColorRGB(`rgb(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`);
+    console.log(buttonTextColorRGB);
+  };
+
+  const onChangeBgColorBtn = (value) => {
+    console.log(value);
+    setButtonBgColor(value);
+    const rgbColor = tinycolor({
+      h: value.hue,
+      s: value.saturation,
+      v: value.brightness,
+    }).toRgb();
+    setButtonBgColorRGB(`rgb(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`);
+  };
+
+  useEffect(() => {
+    if (category === "EventComming") {
+      setTitle("Event coming soon");
+      setMessage("Our bestseller is back! Get yours before it's gone.");
+      setBtnContent("Shop now");
+    } else if (category === "GiftGuide") {
+      setTitle("The Gift Guide");
+      setMessage(
+        "We've rounded up our favorite gifts to help you celebrate your loved ones this holiday season."
+      );
+      setBtnContent("Shop now to get your gift on time");
+    } else if (category === "reminder") {
+      setTitle("Last-minute gifts");
+      setMessage("There's still time to get them something special!");
+      setBtnContent("Shop now");
+    } else if (category === "blog") {
+      setTitle("Your post's title");
+      setMessage("Summary of the post that appears on your home page or blog.");
+      setBtnContent("Read more");
+    }
+  }, []);
 
   return (
     <Frame>
@@ -119,27 +168,37 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         </p>
                       </div>
                       <div style={{ textAlign: "center" }}>
-                        <h1 style={{ fontSize: "28px" }}>HONGSONSTORE</h1>
+                        <h1 style={{ fontSize: "28px" }}>{storeName}</h1>
                       </div>
                     </div>
                     <div style={{ marginBottom: "40px" }}>
                       <div
                         style={{ textAlign: "center", marginBottom: "26px" }}
                       >
-                        <h2 style={{ fontSize: "20px" }}>Event coming soon</h2>
+                        <h2 style={{ fontSize: "20px" }}>{title}</h2>
                       </div>
                       <div style={{ marginBottom: "20px" }}>
-                        <img
-                          style={{ borderRadius: "10px" }}
-                          src="https://st.depositphotos.com/1024740/2316/i/450/depositphotos_23165868-stock-photo-business-cards-blank-mockup-template.jpg"
-                        />
+                        {file === undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src="../../assets/empty.png"
+                          />
+                        ) : null}
+                        {file !== undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src={
+                              validImageTypes.includes(file.type)
+                                ? window.URL.createObjectURL(file)
+                                : NoteMinor
+                            }
+                          />
+                        ) : null}
                       </div>
                       <div
                         style={{ textAlign: "center", marginBottom: "20px" }}
                       >
-                        <p style={{ fontSize: "16px" }}>
-                          Our bestseller is back! Get yours before it's gone.
-                        </p>
+                        <p style={{ fontSize: "16px" }}>{message}</p>
                       </div>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -147,13 +206,13 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         <div
                           style={{
                             padding: "8px",
-                            backgroundColor: "black",
-                            color: "white",
+                            backgroundColor: `${buttonBgColorRGB}`,
+                            color: `${buttonTextColorRGB}`,
                             borderRadius: "5px",
                             cursor: "pointer",
                           }}
                         >
-                          Shop now
+                          {btnContent}
                         </div>
                       </div>
                     </div>
@@ -181,7 +240,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         </p>
                       </div>
                       <div style={{ textAlign: "center" }}>
-                        <h1 style={{ fontSize: "28px" }}>HONGSONSTORE</h1>
+                        <h1 style={{ fontSize: "28px" }}>{storeName}</h1>
                       </div>
                     </div>
                     <div
@@ -202,7 +261,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                           fontSize: "20px",
                         }}
                       >
-                        Shop now to get your gift on time
+                        {btnContent}
                       </div>
                     </div>
                     <div style={{ marginBottom: "40px" }}>
@@ -210,22 +269,31 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         style={{ textAlign: "center", marginBottom: "26px" }}
                       >
                         <h2 style={{ fontSize: "26px", fontWeight: "bold" }}>
-                          The Gift Guide
+                          {title}
                         </h2>
                       </div>
                       <div style={{ marginBottom: "20px" }}>
-                        <img
-                          style={{ borderRadius: "10px" }}
-                          src="https://st.depositphotos.com/1024740/2316/i/450/depositphotos_23165868-stock-photo-business-cards-blank-mockup-template.jpg"
-                        />
+                        {file === undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src="../../assets/empty.png"
+                          />
+                        ) : null}
+                        {file !== undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src={
+                              validImageTypes.includes(file.type)
+                                ? window.URL.createObjectURL(file)
+                                : NoteMinor
+                            }
+                          />
+                        ) : null}
                       </div>
                       <div
                         style={{ textAlign: "center", marginBottom: "20px" }}
                       >
-                        <p style={{ fontSize: "16px" }}>
-                          We've rounded up our favorite gifts to help you
-                          celebrate your loved ones this holiday season.
-                        </p>
+                        <p style={{ fontSize: "16px" }}>{message}</p>
                       </div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -252,7 +320,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         </p>
                       </div>
                       <div style={{ textAlign: "center" }}>
-                        <h1 style={{ fontSize: "28px" }}>HONGSONSTORE</h1>
+                        <h1 style={{ fontSize: "28px" }}>{storeName}</h1>
                       </div>
                     </div>
                     <div
@@ -274,29 +342,39 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         }}
                       >
                         <p>The countdown is on! Shop now to get</p>
-                        <p>your gifts before the shipping cutoff ›</p>
+                        <p>your gifts before the shipping cutoff</p>
                       </div>
                     </div>
                     <div style={{ marginBottom: "40px" }}>
                       <div style={{ marginBottom: "20px" }}>
-                        <img
-                          style={{ borderRadius: "10px" }}
-                          src="https://st.depositphotos.com/1024740/2316/i/450/depositphotos_23165868-stock-photo-business-cards-blank-mockup-template.jpg"
-                        />
+                        {file === undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src="../../assets/empty.png"
+                          />
+                        ) : null}
+                        {file !== undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src={
+                              validImageTypes.includes(file.type)
+                                ? window.URL.createObjectURL(file)
+                                : NoteMinor
+                            }
+                          />
+                        ) : null}
                       </div>
                       <div
                         style={{ textAlign: "center", marginBottom: "10px" }}
                       >
                         <h2 style={{ fontSize: "26px", fontWeight: "bold" }}>
-                          Last-minute gifts
+                          {title}
                         </h2>
                       </div>
                       <div
                         style={{ textAlign: "center", marginBottom: "20px" }}
                       >
-                        <p style={{ fontSize: "16px" }}>
-                          There's still time to get them something special!
-                        </p>
+                        <p style={{ fontSize: "16px" }}>{message}</p>
                       </div>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -310,7 +388,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                             cursor: "pointer",
                           }}
                         >
-                          Shop now
+                          {btnContent}
                         </div>
                       </div>
                     </div>
@@ -338,29 +416,42 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                         </p>
                       </div>
                       <div style={{ textAlign: "center" }}>
-                        <h1 style={{ fontSize: "28px" }}>HONGSONSTORE</h1>
+                        <h1 style={{ fontSize: "28px" }}>{storeName}</h1>
                       </div>
                     </div>
                     <div style={{ marginBottom: "40px" }}>
                       <div
                         style={{ textAlign: "center", marginBottom: "26px" }}
                       >
-                        <h2 style={{ fontSize: "24px", fontWeight: "bold" }}>New on the blog.</h2>
+                        <h2 style={{ fontSize: "24px", fontWeight: "bold" }}>
+                          New on the blog.
+                        </h2>
                       </div>
                       <div style={{ marginBottom: "20px" }}>
-                        <img
-                          style={{ borderRadius: "10px" }}
-                          src="https://st.depositphotos.com/1024740/2316/i/450/depositphotos_23165868-stock-photo-business-cards-blank-mockup-template.jpg"
-                        />
+                        {file === undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src="../../assets/empty.png"
+                          />
+                        ) : null}
+                        {file !== undefined ? (
+                          <img
+                            style={{ borderRadius: "10px", width: "600px" }}
+                            src={
+                              validImageTypes.includes(file.type)
+                                ? window.URL.createObjectURL(file)
+                                : NoteMinor
+                            }
+                          />
+                        ) : null}
                       </div>
                       <div
                         style={{ textAlign: "center", marginBottom: "20px" }}
                       >
-                        <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>Your post's title</h2>
-                        <p style={{ fontSize: "16px" }}>
-                          Summary of the post that appears on your home page or
-                          blog.
-                        </p>
+                        <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
+                          {title}
+                        </h2>
+                        <p style={{ fontSize: "16px" }}>{message}</p>
                       </div>
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -374,7 +465,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                             cursor: "pointer",
                           }}
                         >
-                          Read more
+                          {btnContent}
                         </div>
                       </div>
                     </div>
@@ -437,7 +528,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                   <ColorPicker
                     fullWidth
                     color={buttonTextColor}
-                    onChange={setButtonTextColor}
+                    onChange={(value) => onChangeTextColorBtn(value)}
                   />
                 </div>
                 <Label>Button background color</Label>
@@ -445,7 +536,7 @@ const EditEmailContent = ({ category, setInfoMail }) => {
                   <ColorPicker
                     fullWidth
                     color={buttonBgColor}
-                    onChange={setButtonBgColor}
+                    onChange={(value) => onChangeBgColorBtn(value)}
                   />
                 </div>
                 <Button onClick={saveInfoMail}>Save</Button>
