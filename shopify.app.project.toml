@@ -2,7 +2,7 @@
 
 name = "Project"
 client_id = "dc84a6f2231088b7df11545e7deb74e5"
-application_url = "https://discovered-new-suitable-interpretation.trycloudflare.com"
+application_url = "https://munich-hk-alpine-whom.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://discovered-new-suitable-interpretation.trycloudflare.com/auth/callback",
-  "https://discovered-new-suitable-interpretation.trycloudflare.com/auth/shopify/callback",
-  "https://discovered-new-suitable-interpretation.trycloudflare.com/api/auth/callback",
-  "https://discovered-new-suitable-interpretation.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://munich-hk-alpine-whom.trycloudflare.com/auth/callback",
+  "https://munich-hk-alpine-whom.trycloudflare.com/auth/shopify/callback",
+  "https://munich-hk-alpine-whom.trycloudflare.com/api/auth/callback",
+  "https://munich-hk-alpine-whom.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
