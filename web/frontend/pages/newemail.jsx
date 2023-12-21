@@ -58,6 +58,7 @@ export default function NewEmail() {
 		console.log(category);
 	};
 
+<<<<<<< HEAD
 	const setInfoMail = (
 		storeName,
 		title,
@@ -84,6 +85,25 @@ export default function NewEmail() {
 			btnBackGround
 		);
 	};
+=======
+  const setInfoMail = (
+    storeName,
+    title,
+    thumbnail,
+    message,
+    btnContent,
+    btnTextColor,
+    btnBackGround
+  ) => {
+    setStoreName(storeName);
+    setTitle(title);
+    setThumbnail(thumbnail);
+    setMessage(message);
+    setBtnContent(btnContent);
+    setBtnTextColor(btnTextColor);
+    setBtnBackGround(btnBackGround);
+  };
+>>>>>>> main
 
 	return (
 		<Page>
