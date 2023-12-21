@@ -39,11 +39,25 @@ function isEmpty(value) {
 	}
 }
 export default function ManagementTable() {
+	const [loading, setLoading] = useState(true);
+	const [total, setTotal] = useState(0);
+
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPage, setTotalPage] = useState(1);
 	useEffect(() => {
-		getEmailTemplate({ page: 1, itemsPerPage: 10 }).then((data) =>
-			setEmails(data)
-		);
-	}, [getEmailTemplate]);
+		getEmailTemplate({ page: 1, itemsPerPage: 1 })
+			.then((res) => {
+				setEmails(res.data);
+				setCurrentPage(res.pagination.current_page);
+				setTotal(res.pagination.total);
+				setTotalPage(res.pagination.total_pages);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.error("Error fetching data:", error);
+				setLoading(false);
+			});
+	}, []);
 	const { t } = useTranslation();
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 	const [itemStrings, setItemStrings] = useState([
@@ -166,9 +180,10 @@ export default function ManagementTable() {
 	const handleFiltersQueryChange = useCallback(
 		(value) => {
 			setQueryValue(value);
-			getEmailTemplate({ search: value, page: 1, itemsPerPage: 10 }).then(
-				(data) => setEmails(data)
-			);
+			// Fetch data when the query changes
+			getEmailTemplate({ search: value, page: 1, itemsPerPage: 1 })
+				.then((res) => setEmails(res.data))
+				.catch((error) => console.error("Error fetching data:", error));
 		},
 		[getEmailTemplate]
 	);
@@ -282,69 +297,75 @@ export default function ManagementTable() {
 	const { selectedResources, allResourcesSelected, handleSelectionChange } =
 		useIndexResourceState(emails);
 
-	const rowMarkup = emails.map(
-		(
-			{
-				id,
-				email,
-				startDate,
-				endDate,
-				title,
-				totalUser,
-				openRate,
-				clickRate,
-				status,
-			},
-			index
-		) => (
-			<IndexTable.Row
-				id={id}
-				key={id}
-				selected={selectedResources.includes(id)}
-				position={index}
-			>
-				<IndexTable.Cell>
-					<Text
-						variant="bodyMd"
-						fontWeight="bold"
-						as="span"
-					>
-						{email}
-					</Text>
-				</IndexTable.Cell>
-				<IndexTable.Cell>{startDate}</IndexTable.Cell>
-				<IndexTable.Cell>{endDate}</IndexTable.Cell>
-				<IndexTable.Cell>{title}</IndexTable.Cell>
-				<IndexTable.Cell>
-					<Text
-						as="span"
-						alignment="center"
-						numeric
-					>
-						{totalUser}
-					</Text>
-				</IndexTable.Cell>
-				<IndexTable.Cell>
-					<div style={{ textAlign: "center", color: "#00BFAF" }}>
-						<Text>{openRate}</Text>
-					</div>
-				</IndexTable.Cell>
-				<IndexTable.Cell>
-					<div style={{ textAlign: "center", color: "#00ACE2" }}>
-						<Text>{clickRate}</Text>
-					</div>
-				</IndexTable.Cell>
-				<IndexTable.Cell>
-					<div
-						style={{
-							textAlign: "center",
-							color: status === "Sent" ? "#3A974C" : "#FFCC00",
-						}}
-					>
-						<Text>{status}</Text>
-					</div>
-				</IndexTable.Cell>
-			</IndexTable.Row>
+	const rowMarkup = loading ? (
+		<IndexTable.Row>
+			<IndexTable.Cell colSpan={8}>Loading...</IndexTable.Cell>
+		</IndexTable.Row>
+	) : (
+		emails.map(
+			(
+				{
+					id,
+					email,
+					startDate,
+					endDate,
+					title,
+					totalUser,
+					openRate,
+					clickRate,
+					status,
+				},
+				index
+			) => (
+				<IndexTable.Row
+					id={id}
+					key={id}
+					selected={selectedResources.includes(id)}
+					position={index}
+				>
+					<IndexTable.Cell>
+						<Text
+							variant="bodyMd"
+							fontWeight="bold"
+							as="span"
+						>
+							{email}
+						</Text>
+					</IndexTable.Cell>
+					<IndexTable.Cell>{startDate}</IndexTable.Cell>
+					<IndexTable.Cell>{endDate}</IndexTable.Cell>
+					<IndexTable.Cell>{title}</IndexTable.Cell>
+					<IndexTable.Cell>
+						<Text
+							as="span"
+							alignment="center"
+							numeric
+						>
+							{totalUser}
+						</Text>
+					</IndexTable.Cell>
+					<IndexTable.Cell>
+						<div style={{ textAlign: "center", color: "#00BFAF" }}>
+							<Text>{openRate}</Text>
+						</div>
+					</IndexTable.Cell>
+					<IndexTable.Cell>
+						<div style={{ textAlign: "center", color: "#00ACE2" }}>
+							<Text>{clickRate}</Text>
+						</div>
+					</IndexTable.Cell>
+					<IndexTable.Cell>
+						<div
+							style={{
+								textAlign: "center",
+								color: status === "Sent" ? "#3A974C" : "#FFCC00",
+							}}
+						>
+							<Text>{status}</Text>
+						</div>
+					</IndexTable.Cell>
+				</IndexTable.Row>
+			)
 		)
 	);
 
@@ -411,14 +432,48 @@ export default function ManagementTable() {
 				>
 					<Pagination
 						onPrevious={() => {
-							console.log("Previous");
+							const nextPage = currentPage + 1;
+							if (nextPage <= totalPage) {
+								getEmailTemplate({
+									search: value,
+									page: nextPage,
+									itemsPerPage: 1,
+								})
+									.then((res) => {
+										setEmails(res.data);
+										setCurrentPage(res.pagination.current_page);
+										setTotal(res.pagination.total);
+										setTotalPage(res.pagination.total_pages);
+										setLoading(false);
+									})
+									.catch((error) =>
+										console.error("Error fetching data:", error)
+									);
+							}
 						}}
 						onNext={() => {
-							console.log("Next");
+							const prevPage = currentPage - 1;
+							if (prevPage >= 1) {
+								getEmailTemplate({
+									search: value,
+									page: prevPage,
+									itemsPerPage: 1,
+								})
+									.then((res) => {
+										setEmails(res.data);
+										setCurrentPage(res.pagination.current_page);
+										setTotal(res.pagination.total);
+										setTotalPage(res.pagination.total_pages);
+										setLoading(false);
+									})
+									.catch((error) =>
+										console.error("Error fetching data:", error)
+									);
+							}
 						}}
 						type="table"
 						hasNext
-						label="1-50 of 8,450 orders"
+						label={`${currentPage}`}
 					/>
 				</div>
 			</LegacyCard>

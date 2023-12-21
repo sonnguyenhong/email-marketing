@@ -2,7 +2,7 @@
 
 name = "email-marketing"
 client_id = "9baf435d93b9286328d99abd1731c888"
-application_url = "https://requested-facilitate-aggressive-creates.trycloudflare.com"
+application_url = "https://tee-affected-opens-headline.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://requested-facilitate-aggressive-creates.trycloudflare.com/auth/callback",
-  "https://requested-facilitate-aggressive-creates.trycloudflare.com/auth/shopify/callback",
-  "https://requested-facilitate-aggressive-creates.trycloudflare.com/api/auth/callback",
-  "https://requested-facilitate-aggressive-creates.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://tee-affected-opens-headline.trycloudflare.com/auth/callback",
+  "https://tee-affected-opens-headline.trycloudflare.com/auth/shopify/callback",
+  "https://tee-affected-opens-headline.trycloudflare.com/api/auth/callback",
+  "https://tee-affected-opens-headline.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
