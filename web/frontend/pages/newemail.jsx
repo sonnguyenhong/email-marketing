@@ -69,15 +69,6 @@ export default function NewEmail() {
     setBtnContent(btnContent);
     setBtnTextColor(btnTextColor);
     setBtnBackGround(btnBackGround);
-    console.log(
-      storeName,
-      title,
-      thumbnail,
-      message,
-      btnContent,
-      btnTextColor,
-      btnBackGround
-    );
   };
 
   return (

@@ -89,7 +89,6 @@ const EditEmailContent = ({ category, setInfoMail }) => {
   };
 
   const onChangeTextColorBtn = (value) => {
-    console.log(value);
     setButtonTextColor(value);
     const rgbColor = tinycolor({
       h: value.hue,
@@ -97,11 +96,9 @@ const EditEmailContent = ({ category, setInfoMail }) => {
       v: value.brightness,
     }).toRgb();
     setButtonTextColorRGB(`rgb(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`);
-    console.log(buttonTextColorRGB);
   };
 
   const onChangeBgColorBtn = (value) => {
-    console.log(value);
     setButtonBgColor(value);
     const rgbColor = tinycolor({
       h: value.hue,

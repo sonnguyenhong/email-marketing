@@ -86,3 +86,18 @@
 .template-email-card:hover .imageEmail {
   transform: translateY(-50%); /* Adjust the translateY value based on the image height */
 }
+.cover-detail{
+  display: flex;
+}
+.detail1{
+  padding-right: 20px;
+  border-right: 1px solid #000;
+}
+.detail2{
+  padding-left: 20px;
+}
+.data-detail{
+  margin: 10px 0;
+  font-weight: bold;
+  font-size: 20px;
+}
