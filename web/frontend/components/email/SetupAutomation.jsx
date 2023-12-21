@@ -1,30 +1,38 @@
 import {
-	Button,
 	LegacyCard,
 	Layout,
 	Text,
 	FormLayout,
 	TextField,
-	RadioButton,
-	LegacyStack,
+	Select,
 } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
 import "../../style/app.css";
 import { useCallback, useState } from "react";
 import * as React from "react";
-
 const SetupAutomation = () => {
 	const [title, setTitle] = useState("");
 	const handleTitleChange = useCallback((value) => setTitle(value), []);
+	const [hour, setHour] = useState("");
+	const handleHourChange = useCallback((value) => setHour(value), []);
+	const [startTime, setStartTime] = useState("");
+	const handleStartTimeChange = useCallback((value) => setStartTime(value), []);
+	const [endTime, setEndTime] = useState("");
+	const handleEndTimeChange = useCallback((value) => setEndTime(value), []);
 
-	const handleSubmit = useCallback(() => setTitle(""), []);
-	const [radioValue, setRadioValue] = useState("disabled");
-	const handleRadioChange = useCallback(
-		(_, newValue) => setRadioValue(newValue),
-		[]
-	);
+	const [selected, setSelected] = useState("today");
 
+	const handleSelectChange = useCallback((value) => setSelected(value), []);
+
+	const options = [
+		{ label: "Monday", value: 1 },
+		{ label: "Tuesday", value: 2 },
+		{ label: "Wednesday", value: 3 },
+		{ label: "Thursday", value: 4 },
+		{ label: "Friday", value: 5 },
+		{ label: "Saturday", value: 6 },
+		{ label: "Sunday", value: 7 },
+	];
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>
 			<Layout.Section>
@@ -32,6 +40,7 @@ const SetupAutomation = () => {
 					<div style={{ height: 500, width: 500, padding: 20 }}>
 						<FormLayout>
 							<TextField
+								type="text"
 								label={
 									<Text
 										variant="headingSm"
@@ -44,24 +53,54 @@ const SetupAutomation = () => {
 								labelAction={"Required"}
 								onChange={handleTitleChange}
 							></TextField>
-							<LegacyStack vertical>
-								<RadioButton
-									label="Accounts are optional"
-									helpText="Customers will be able to check out with a customer account or as a guest."
-									id="optional"
-									name="accounts"
-									checked={radioValue === "optional"}
-									onChange={handleRadioChange}
-								/>
-								<RadioButton
-									label="Accounts are optional"
-									helpText=""
-									id="optional"
-									name="accounts"
-									checked={radioValue === "optional"}
-									onChange={handleRadioChange}
-								/>
-							</LegacyStack>
+							<TextField
+								type="time"
+								label={
+									<Text
+										variant="headingSm"
+										as="h3"
+									>
+										Hour send
+									</Text>
+								}
+								value={hour}
+								labelAction={"Required"}
+								onChange={handleHourChange}
+							></TextField>
+							<Select
+								label="Day send"
+								options={options}
+								onChange={handleSelectChange}
+								value={selected}
+							/>
+							<TextField
+								type="date"
+								label={
+									<Text
+										variant="headingSm"
+										as="h3"
+									>
+										Start time
+									</Text>
+								}
+								value={startTime}
+								labelAction={"Required"}
+								onChange={handleStartTimeChange}
+							></TextField>
+							<TextField
+								type="date"
+								label={
+									<Text
+										variant="headingSm"
+										as="h3"
+									>
+										End time
+									</Text>
+								}
+								value={endTime}
+								labelAction={"Required"}
+								onChange={handleEndTimeChange}
+							></TextField>
 						</FormLayout>
 					</div>
 				</LegacyCard>

@@ -11,6 +11,7 @@ import {
 	useSetIndexFiltersMode,
 	ChoiceList,
 	RangeSlider,
+	Pagination,
 } from "@shopify/polaris";
 import React from "react";
 import { TitleBar } from "@shopify/app-bridge-react";
@@ -268,7 +269,8 @@ export default function ManagementTable() {
 		{
 			id: "1020",
 			email: "#1020",
-			date: "Jul 20 at 4:34pm",
+			startDate: "Jul 20 at 4:34pm",
+			endDate: "Jul 20 at 4:34pm",
 			title: "Jaydon Stanton",
 			totalUser: "1000",
 			openRate: "20%",
@@ -278,7 +280,8 @@ export default function ManagementTable() {
 		{
 			id: "1019",
 			email: "#1019",
-			date: "Jul 20 at 3:46pm",
+			startDate: "Jul 20 at 4:34pm",
+			endDate: "Jul 20 at 4:34pm",
 			title: "Ruben Westerfelt",
 			totalUser: "2000",
 			openRate: "20%",
@@ -288,7 +291,8 @@ export default function ManagementTable() {
 		{
 			id: "1018",
 			email: "#1018",
-			date: "Jul 20 at 3.44pm",
+			startDate: "Jul 20 at 4:34pm",
+			endDate: "Jul 20 at 4:34pm",
 			title: "Leo Carder",
 			totalUser: "3000",
 			openRate: "20%",
@@ -306,7 +310,17 @@ export default function ManagementTable() {
 
 	const rowMarkup = emails.map(
 		(
-			{ id, email, date, title, totalUser, openRate, clickRate, status },
+			{
+				id,
+				email,
+				startDate,
+				endDate,
+				title,
+				totalUser,
+				openRate,
+				clickRate,
+				status,
+			},
 			index
 		) => (
 			<IndexTable.Row
@@ -324,7 +338,8 @@ export default function ManagementTable() {
 						{email}
 					</Text>
 				</IndexTable.Cell>
-				<IndexTable.Cell>{date}</IndexTable.Cell>
+				<IndexTable.Cell>{startDate}</IndexTable.Cell>
+				<IndexTable.Cell>{endDate}</IndexTable.Cell>
 				<IndexTable.Cell>{title}</IndexTable.Cell>
 				<IndexTable.Cell>
 					<Text
@@ -400,7 +415,8 @@ export default function ManagementTable() {
 					onSelectionChange={handleSelectionChange}
 					headings={[
 						{ title: "Email" },
-						{ title: "Date" },
+						{ title: "Start Date" },
+						{ title: "End Date" },
 						{ title: "Title" },
 						{ title: "Total User", alignment: "center" },
 						{ title: "Open Rate", alignment: "center" },
@@ -410,6 +426,27 @@ export default function ManagementTable() {
 				>
 					{rowMarkup}
 				</IndexTable>
+				<div
+					style={{
+						display: "flex",
+						marginRight: 0,
+						margin: 0,
+						alignItems: "flex-end",
+						justifyContent: "flex-end",
+					}}
+				>
+					<Pagination
+						onPrevious={() => {
+							console.log("Previous");
+						}}
+						onNext={() => {
+							console.log("Next");
+						}}
+						type="table"
+						hasNext
+						label="1-50 of 8,450 orders"
+					/>
+				</div>
 			</LegacyCard>
 		</Page>
 	);
