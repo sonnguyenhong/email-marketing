@@ -45,7 +45,7 @@ export default function ManagementTable() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPage, setTotalPage] = useState(1);
 	useEffect(() => {
-		getEmailTemplate({ page: 1, itemsPerPage: 1 })
+		getEmailTemplate({ page: 1, itemsPerPage: 5 })
 			.then((res) => {
 				setEmails(res.data);
 				setCurrentPage(res.pagination.current_page);
@@ -181,7 +181,7 @@ export default function ManagementTable() {
 		(value) => {
 			setQueryValue(value);
 			// Fetch data when the query changes
-			getEmailTemplate({ search: value, page: 1, itemsPerPage: 1 })
+			getEmailTemplate({ search: value, page: 1, itemsPerPage: 5 })
 				.then((res) => setEmails(res.data))
 				.catch((error) => console.error("Error fetching data:", error));
 		},
@@ -437,7 +437,7 @@ export default function ManagementTable() {
 								getEmailTemplate({
 									search: value,
 									page: nextPage,
-									itemsPerPage: 1,
+									itemsPerPage: 5,
 								})
 									.then((res) => {
 										setEmails(res.data);
@@ -457,7 +457,7 @@ export default function ManagementTable() {
 								getEmailTemplate({
 									search: value,
 									page: prevPage,
-									itemsPerPage: 1,
+									itemsPerPage: 5,
 								})
 									.then((res) => {
 										setEmails(res.data);

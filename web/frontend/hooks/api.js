@@ -1,6 +1,6 @@
 import axios from "axios";
 const emailTemplateClient = axios.create({
-	baseURL: "https://6cf8-1-53-36-160.ngrok-free.app/api",
+	baseURL: "https://b6d3-210-86-228-180.ngrok-free.app/api",
 	headers: {
 		"ngrok-skip-browser-warning": "69420",
 	},

@@ -24,16 +24,12 @@ const SelectCustomer = ({ onSelectUser }) => {
 	useEffect(() => {
 		getCustomers({ page: 1, itemsPerPage: 10 })
 			.then((res) => {
-				setUsers(res.data);
-				setCurrentPage(res.pagination.current_page);
-				setTotal(res.pagination.total);
-				setTotalPage(res.pagination.total_pages);
-				onSelectUser(res.data);
-				setLoading(false);
+				setUsers(res);
+				const selectUserIds = res.map((user) => user.id);
+				onSelectUser(selectUserIds);
 			})
 			.catch((error) => {
 				console.error("Error fetching data:", error);
-				setLoading(false);
 			});
 	}, [getCustomers]);
 	useEffect(() => {

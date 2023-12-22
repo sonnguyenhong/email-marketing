@@ -10,19 +10,36 @@ import { useTranslation } from "react-i18next";
 import "../../style/app.css";
 import { useCallback, useState } from "react";
 import * as React from "react";
-const SetupAutomation = () => {
+const SetupAutomation = ({ setAutomationData }) => {
 	const [title, setTitle] = useState("");
-	const handleTitleChange = useCallback((value) => setTitle(value), []);
+	const handleTitleChange = useCallback((value) => {
+		setTitle(value);
+		setAutomationData(value, startTime, endTime, hour, selected);
+	}, []);
 	const [hour, setHour] = useState("");
-	const handleHourChange = useCallback((value) => setHour(value), []);
+	const handleHourChange = useCallback((value) => {
+		setHour(value);
+		setAutomationData(title, startTime, endTime, hour, selected);
+	}, []);
 	const [startTime, setStartTime] = useState("");
-	const handleStartTimeChange = useCallback((value) => setStartTime(value), []);
+	const handleStartTimeChange = useCallback((value) => {
+		setStartTime(value);
+		console.log(startTime);
+		setAutomationData(title, startTime, endTime, hour, selected);
+	}, []);
 	const [endTime, setEndTime] = useState("");
-	const handleEndTimeChange = useCallback((value) => setEndTime(value), []);
+	const handleEndTimeChange = useCallback((value) => {
+		setEndTime(value);
+		console.log(endTime);
+		setAutomationData(title, startTime, endTime, hour, selected);
+	}, []);
 
 	const [selected, setSelected] = useState("today");
 
-	const handleSelectChange = useCallback((value) => setSelected(value), []);
+	const handleSelectChange = useCallback((value) => {
+		setSelected(value);
+		setAutomationData(title, startTime, endTime, hour, selected);
+	}, []);
 
 	const options = [
 		{ label: "Monday", value: 1 },
@@ -31,7 +48,7 @@ const SetupAutomation = () => {
 		{ label: "Thursday", value: 4 },
 		{ label: "Friday", value: 5 },
 		{ label: "Saturday", value: 6 },
-		{ label: "Sunday", value: 7 },
+		{ label: "Sunday", value: 0 },
 	];
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>

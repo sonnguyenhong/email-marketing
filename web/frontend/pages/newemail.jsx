@@ -16,6 +16,7 @@ import { useState } from "react";
 import EditEmailContent from "../components/email/EditEmailContent";
 import SelectCustomer from "../components/email/SelectCustomer";
 import SetupAutomation from "../components/email/SetupAutomation";
+import { saveEmailSchedule } from "../hooks/api";
 
 const STEP = {
 	SELECT_EMAIL_TYPE: 1,
@@ -37,6 +38,12 @@ export default function NewEmail() {
 	const [btnBackGround, setBtnBackGround] = useState();
 	const [selectedUser, setSelectedUser] = useState([]);
 
+	const [titleEmail, setTitleEmail] = useState();
+	const [startDate, setStartDate] = useState();
+	const [endDate, setEndDate] = useState();
+	const [hourSent, setHourSent] = useState();
+	const [daySent, setDaySent] = useState();
+
 	const handleNextStep = () => {
 		if (step < STEP.SETUP_AUTOMATION) {
 			setStep((step) => step + 1);
@@ -44,7 +51,26 @@ export default function NewEmail() {
 	};
 
 	const handleSubmit = () => {
-		console.log(category);
+		saveEmailSchedule({
+			startDate: startDate,
+			endDate: endDate,
+			title: titleEmail,
+			category: category,
+			status: "Sent",
+			customer: selectedUser,
+			property: [
+				{ property_id: "1", value: storeName },
+				{ property_id: "2", value: title },
+				{
+					property_id: "3",
+					value:
+						"https://i2.wp.com/www.digital38.com.vn/wp-content/uploads/2020/12/email-marketing-1.jpeg?fit=2000%2C1333&ssl=1",
+				},
+				{ property_id: "4", value: message },
+				{ property_id: "5", value: btnContent },
+				{ property_id: "6", value: btnBackGround },
+			],
+		}).then(() => setStep(1));
 	};
 	const handleBackStep = () => {
 		if (step > STEP.SELECT_EMAIL_TYPE) {
@@ -52,13 +78,10 @@ export default function NewEmail() {
 		}
 	};
 	const parentSelectTeamplate = (newStep, newTemplate) => {
-		console.log("hello");
 		setStep(newStep);
 		setCategory(newTemplate);
-		console.log(category);
 	};
 
-<<<<<<< HEAD
 	const setInfoMail = (
 		storeName,
 		title,
@@ -75,36 +98,20 @@ export default function NewEmail() {
 		setBtnContent(btnContent);
 		setBtnTextColor(btnTextColor);
 		setBtnBackGround(btnBackGround);
-		console.log(
-			storeName,
-			title,
-			thumbnail,
-			message,
-			btnContent,
-			btnTextColor,
-			btnBackGround
-		);
 	};
-=======
-  const setInfoMail = (
-    storeName,
-    title,
-    thumbnail,
-    message,
-    btnContent,
-    btnTextColor,
-    btnBackGround
-  ) => {
-    setStoreName(storeName);
-    setTitle(title);
-    setThumbnail(thumbnail);
-    setMessage(message);
-    setBtnContent(btnContent);
-    setBtnTextColor(btnTextColor);
-    setBtnBackGround(btnBackGround);
-  };
->>>>>>> main
-
+	const setupAutomationData = (
+		emailTitle,
+		startDate,
+		endDate,
+		hourSent,
+		daySent
+	) => {
+		setTitleEmail(emailTitle);
+		setStartDate(startDate);
+		setEndDate(endDate);
+		setHourSent(hourSent);
+		setDaySent(daySent);
+	};
 	return (
 		<Page>
 			<TitleBar
@@ -142,7 +149,9 @@ export default function NewEmail() {
 				{step === STEP.SELECT_CUSTOMER ? (
 					<SelectCustomer onSelectUser={setSelectedUser} />
 				) : null}
-				{step === STEP.SETUP_AUTOMATION ? <SetupAutomation /> : null}
+				{step === STEP.SETUP_AUTOMATION ? (
+					<SetupAutomation setAutomationData={setupAutomationData} />
+				) : null}
 				<Layout.Section>
 					<div style={{ display: "flex", justifyContent: "space-between" }}>
 						{step > STEP.SELECT_EMAIL_TYPE ? (
